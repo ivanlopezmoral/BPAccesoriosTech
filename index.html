@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BP Accesorios Tech | Accesorios Premium para tu Tecnología</title>
+<meta name="description" content="Descubrí fundas, protectores, auriculares, cargadores, power banks y accesorios gaming en BP Accesorios Tech.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="BP Accesorios Tech | Accesorios Premium para tu Tecnología">
+<meta property="og:description" content="Descubrí fundas, protectores, auriculares, cargadores, power banks y accesorios gaming en BP Accesorios Tech.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://picsum.photos/seed/bpheroog/1200/630">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" id="navbar">
+  <div class="navbar__inner">
+    <a href="#inicio" class="brand" aria-label="BP Accesorios Tech - Inicio">
+      <span class="brand__mark">BP</span>
+      <span class="brand__name">Accesorios Tech</span>
+    </a>
+
+    <nav class="nav-links" id="navLinks" aria-label="Navegación principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#tienda">Tienda</a>
+      <a href="#categorias">Categorías</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="navbar__actions">
+      <div class="search-box" id="searchBox">
+        <button class="icon-btn" id="searchToggle" aria-label="Buscar" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos..." aria-label="Buscar productos">
+      </div>
+
+      <button class="icon-btn" aria-label="Mi cuenta">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      </button>
+
+      <button class="icon-btn cart-btn" id="cartToggle" aria-label="Abrir carrito">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+
+      <button class="icon-btn hamburger" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#inicio">Inicio</a>
+    <a href="#tienda">Tienda</a>
+    <a href="#categorias">Categorías</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="inicio">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="hero__inner">
+      <div class="hero__text reveal">
+        <p class="eyebrow">BP ACCESORIOS TECH</p>
+        <h1>TECNOLOGÍA.<br>ESTILO.<br><span class="text-accent">TODO EN UN SOLO LUGAR.</span></h1>
+        <p class="hero__subtitle">Accesorios premium para tus dispositivos.</p>
+        <div class="hero__actions">
+          <a href="#tienda" class="btn btn--primary">Comprar ahora</a>
+          <a href="#categorias" class="btn btn--ghost">Explorar productos</a>
+        </div>
+      </div>
+      <div class="hero__visual reveal">
+        <div class="hero__product-card">
+          <img id="heroImage" src="" alt="Producto destacado BP Accesorios Tech" loading="eager">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CATEGORÍAS ============ -->
+  <section class="section" id="categorias">
+    <div class="container">
+      <h2 class="section__title reveal">Descubrí tu próximo accesorio.</h2>
+      <div class="category-grid" id="categoryGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ PRODUCTOS DESTACADOS / TIENDA ============ -->
+  <section class="section section--tienda" id="tienda">
+    <div class="container">
+      <div class="section__header reveal">
+        <h2 class="section__title">Productos destacados</h2>
+        <div class="filters" id="filters" role="tablist" aria-label="Filtrar por categoría">
+          <button class="filter-btn is-active" data-filter="all">Todos</button>
+        </div>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+      <p class="empty-state" id="emptyState" hidden>No encontramos productos que coincidan con tu búsqueda.</p>
+    </div>
+  </section>
+
+  <!-- ============ BANNER EDITORIAL ============ -->
+  <section class="banner">
+    <div class="banner__inner">
+      <div class="banner__text reveal">
+        <p class="eyebrow">EDICIÓN DESTACADA</p>
+        <h2>Tu tecnología merece algo mejor.</h2>
+        <p class="banner__desc">Materiales premium, protección real y un diseño que acompaña tu estilo todos los días.</p>
+        <a href="#tienda" class="btn btn--primary">Descubrir</a>
+      </div>
+      <div class="banner__visual reveal">
+        <img id="bannerImage" src="" alt="Composición de accesorios BP Accesorios Tech" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BENEFICIOS ============ -->
+  <section class="section section--benefits">
+    <div class="container">
+      <div class="benefits-grid">
+        <div class="benefit reveal">
+          <span class="benefit__icon" aria-hidden="true">🚚</span>
+          <h3>Envíos rápidos</h3>
+          <p>Recibí tus productos de forma rápida y segura.</p>
+        </div>
+        <div class="benefit reveal">
+          <span class="benefit__icon" aria-hidden="true">🔒</span>
+          <h3>Compra segura</h3>
+          <p>Protegemos tus datos y tu compra.</p>
+        </div>
+        <div class="benefit reveal">
+          <span class="benefit__icon" aria-hidden="true">💳</span>
+          <h3>Medios de pago</h3>
+          <p>Elegí la forma de pago que prefieras.</p>
+        </div>
+        <div class="benefit reveal">
+          <span class="benefit__icon" aria-hidden="true">💬</span>
+          <h3>Atención personalizada</h3>
+          <p>Estamos para ayudarte.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOBRE NOSOTROS ============ -->
+  <section class="section section--about" id="nosotros">
+    <div class="container about__inner">
+      <div class="about__visual reveal">
+        <img id="aboutImage" src="" alt="Accesorios BP Accesorios Tech en composición de estudio" loading="lazy">
+      </div>
+      <div class="about__text reveal">
+        <p class="eyebrow">SOBRE BP ACCESORIOS TECH</p>
+        <h2>Tecnología con estilo propio.</h2>
+        <p>En BP Accesorios Tech creemos que la tecnología también es una cuestión de estilo. Seleccionamos accesorios pensados para proteger, potenciar y acompañar tus dispositivos todos los días.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL ============ -->
+  <section class="cta-final">
+    <div class="cta-final__inner reveal">
+      <h2>Elevá tu experiencia tecnológica.</h2>
+      <p>Descubrí accesorios diseñados para acompañarte todos los días.</p>
+      <a href="#tienda" class="btn btn--primary">Ver tienda</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" id="contacto">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a href="#inicio" class="brand">
+        <span class="brand__mark">BP</span>
+        <span class="brand__name">Accesorios Tech</span>
+      </a>
+      <p>Accesorios tecnológicos para un estilo de vida conectado.</p>
+    </div>
+
+    <div class="footer__col">
+      <h4>Tienda</h4>
+      <ul>
+        <li><a href="#tienda" data-filter-link="fundas">Fundas</a></li>
+        <li><a href="#tienda" data-filter-link="protectores">Protectores</a></li>
+        <li><a href="#tienda" data-filter-link="auriculares">Auriculares</a></li>
+        <li><a href="#tienda" data-filter-link="cargadores">Cargadores</a></li>
+        <li><a href="#tienda" data-filter-link="powerbanks">Power Banks</a></li>
+        <li><a href="#tienda" data-filter-link="gaming">Gaming</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4>Ayuda</h4>
+      <ul>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#contacto">Preguntas frecuentes</a></li>
+        <li><a href="#contacto">Envíos</a></li>
+        <li><a href="#contacto">Cambios y devoluciones</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4>Redes</h4>
+      <ul>
+        <li><a href="#" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="#" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="#" target="_blank" rel="noopener">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <p>© 2026 BP Accesorios Tech. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- ============ CART DRAWER ============ -->
+<div class="overlay" id="overlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Carrito de compras" aria-hidden="true">
+  <div class="cart-drawer__header">
+    <h3>Tu carrito</h3>
+    <button class="icon-btn" id="cartClose" aria-label="Cerrar carrito">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="cart-drawer__items" id="cartItems">
+    <p class="cart-empty" id="cartEmpty">Tu carrito está vacío.</p>
+  </div>
+  <div class="cart-drawer__footer">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">$0</span>
+    </div>
+    <button class="btn btn--primary btn--full" id="checkoutBtn">Finalizar compra</button>
+  </div>
+</aside>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
