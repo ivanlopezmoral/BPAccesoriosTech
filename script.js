@@ -4,29 +4,55 @@
 
 /* ---------------------------------------------------------
    1. CONFIGURACIÓN CENTRALIZADA DE IMÁGENES
-   Reemplazá estas URLs por las fotos reales de tus productos.
+   -----------------------------------------------------------
+   Reemplazá cada valor por la URL o ruta de tu foto real
+   (ej: "assets/img/magsafe.jpg" o una URL de tu propio hosting).
+   Mientras no la reemplaces, se genera automáticamente un
+   placeholder local en SVG — no depende de ningún servicio
+   externo, así que nunca se rompe ni tarda en cargar.
 --------------------------------------------------------- */
+function escapeXml(str) {
+  return String(str).replace(/[<>&"]/g, c => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
+}
+
+function placeholderImage(label, accent) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700" viewBox="0 0 700 700">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#050506"/>
+        <stop offset="100%" stop-color="${accent}" stop-opacity="0.5"/>
+      </linearGradient>
+    </defs>
+    <rect width="700" height="700" fill="url(#g)"/>
+    <circle cx="350" cy="270" r="110" fill="${accent}" fill-opacity="0.16"/>
+    <circle cx="350" cy="270" r="70" fill="none" stroke="${accent}" stroke-opacity="0.5" stroke-width="1.5"/>
+    <text x="350" y="410" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#ffffff" text-anchor="middle">${escapeXml(label)}</text>
+    <text x="350" y="446" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="3" fill="${accent}" text-anchor="middle">BP ACCESORIOS TECH</text>
+  </svg>`;
+  return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+}
+
 const productImages = {
-  hero: "https://picsum.photos/seed/bp-hero/900/900",
-  banner: "https://picsum.photos/seed/bp-banner/900/700",
-  about: "https://picsum.photos/seed/bp-about/900/760",
-  categoryFundas: "https://picsum.photos/seed/bp-cat-fundas/600/460",
-  categoryProtectores: "https://picsum.photos/seed/bp-cat-protectores/600/460",
-  categoryAuriculares: "https://picsum.photos/seed/bp-cat-auriculares/600/460",
-  categoryCargadores: "https://picsum.photos/seed/bp-cat-cargadores/600/460",
-  categoryPowerbanks: "https://picsum.photos/seed/bp-cat-powerbanks/600/460",
-  categoryGaming: "https://picsum.photos/seed/bp-cat-gaming/600/460",
-  magsafe: "https://picsum.photos/seed/bp-magsafe/600/600",
-  silicone: "https://picsum.photos/seed/bp-silicone/600/600",
-  temperedGlass: "https://picsum.photos/seed/bp-glass/600/600",
-  airpodsPro: "https://picsum.photos/seed/bp-airpodspro/600/600",
-  airpodsMax: "https://picsum.photos/seed/bp-airpodsmax/600/600",
-  usbC: "https://picsum.photos/seed/bp-usbc/600/600",
-  lightning: "https://picsum.photos/seed/bp-lightning/600/600",
-  powerBank: "https://picsum.photos/seed/bp-powerbank/600/600",
-  chargingBase: "https://picsum.photos/seed/bp-chargingbase/600/600",
-  joystick: "https://picsum.photos/seed/bp-joystick/600/600",
-  fallback: "https://picsum.photos/seed/bp-fallback/600/600"
+  hero: placeholderImage("Producto destacado", "#007AFF"),
+  banner: placeholderImage("Edición destacada", "#007AFF"),
+  about: placeholderImage("BP Accesorios Tech", "#007AFF"),
+  categoryFundas: placeholderImage("Fundas", "#0A5FC2"),
+  categoryProtectores: placeholderImage("Protectores", "#2A2A2F"),
+  categoryAuriculares: placeholderImage("Auriculares", "#007AFF"),
+  categoryCargadores: placeholderImage("Cargadores", "#2A2A2F"),
+  categoryPowerbanks: placeholderImage("Power Banks", "#0A5FC2"),
+  categoryGaming: placeholderImage("Gaming", "#003C7E"),
+  magsafe: placeholderImage("Funda MagSafe", "#0A5FC2"),
+  silicone: placeholderImage("Funda Silicona", "#0A5FC2"),
+  temperedGlass: placeholderImage("Vidrio Templado", "#2A2A2F"),
+  airpodsPro: placeholderImage("AirPods Pro", "#007AFF"),
+  airpodsMax: placeholderImage("AirPods Max", "#007AFF"),
+  usbC: placeholderImage("Cargador USB-C", "#2A2A2F"),
+  lightning: placeholderImage("Cargador Lightning", "#2A2A2F"),
+  powerBank: placeholderImage("Power Bank", "#0A5FC2"),
+  chargingBase: placeholderImage("Base de Carga", "#003C7E"),
+  joystick: placeholderImage("Joystick", "#003C7E"),
+  fallback: placeholderImage("BP Accesorios Tech", "#007AFF")
 };
 
 /* ---------------------------------------------------------
@@ -524,17 +550,60 @@ function initCartDrawer() {
     closeMobileMenu();
   });
 
-  checkoutBtn.addEventListener("click", () => {
-    if (cart.length === 0) {
-      showToast("Tu carrito está vacío");
-      return;
-    }
-    showToast("Checkout próximamente disponible.");
-  });
+  checkoutBtn.addEventListener("click", () => startCheckout(checkoutBtn));
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") close();
   });
+}
+
+/* ---------------------------------------------------------
+   11.1 CHECKOUT — Mercado Pago
+   -----------------------------------------------------------
+   Envía el carrito a la función serverless /api/create-preference,
+   que crea la preferencia de pago en Mercado Pago (usando el
+   Access Token guardado de forma segura en el servidor) y
+   devuelve la URL de Checkout Pro para redirigir al comprador.
+--------------------------------------------------------- */
+async function startCheckout(button) {
+  if (cart.length === 0) {
+    showToast("Tu carrito está vacío");
+    return;
+  }
+
+  const items = cart.map(item => {
+    const product = products.find(p => p.id === item.id);
+    return {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: item.qty
+    };
+  });
+
+  const originalLabel = button.textContent;
+  button.disabled = true;
+  button.textContent = "Redirigiendo a Mercado Pago...";
+
+  try {
+    const response = await fetch("/api/create-preference", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.init_point) {
+      throw new Error(data.error || "No se pudo iniciar el pago");
+    }
+
+    window.location.href = data.init_point;
+  } catch (error) {
+    showToast("No pudimos conectar con Mercado Pago. Intentá nuevamente.");
+    button.disabled = false;
+    button.textContent = originalLabel;
+  }
 }
 
 /* ---------------------------------------------------------
@@ -646,6 +715,30 @@ function initStaticImages() {
 }
 
 /* ---------------------------------------------------------
+   17.1 REGRESO DESDE MERCADO PAGO
+   Lee ?status=success|failure|pending en la URL de vuelta.
+--------------------------------------------------------- */
+function handleMpReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get("status");
+  if (!status) return;
+
+  if (status === "success") {
+    cart = [];
+    saveCart(cart);
+    showToast("¡Pago aprobado! Gracias por tu compra.");
+  } else if (status === "pending") {
+    showToast("Tu pago está pendiente de aprobación.");
+  } else if (status === "failure") {
+    showToast("El pago no pudo completarse. Podés intentar de nuevo.");
+  }
+
+  params.delete("status");
+  const newUrl = window.location.pathname + (params.toString() ? `?${params}` : "") + window.location.hash;
+  window.history.replaceState({}, "", newUrl);
+}
+
+/* ---------------------------------------------------------
    18. INICIALIZACIÓN
 --------------------------------------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
@@ -662,4 +755,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initSearch();
   initCartDrawer();
   initFooterFilterLinks();
+  handleMpReturn();
 });

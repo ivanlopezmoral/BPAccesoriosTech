@@ -1,0 +1,9 @@
+{
+  "name": "bp-accesorios-tech",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tienda online de BP Accesorios Tech con checkout de Mercado Pago.",
+  "engines": {
+    "node": ">=18"
+  }
+}
